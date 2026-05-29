@@ -36,7 +36,7 @@ const number = (value) => {
 };
 
 function formatDate(date) {
-  return date.toISOString().slice(0, 10);
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
 function addDays(date, days) {
@@ -49,6 +49,10 @@ function operatingDate(now = new Date()) {
   const start = new Date(now);
   if (start.getHours() < 7) start.setDate(start.getDate() - 1);
   return formatDate(start);
+}
+
+function workingDate(now = new Date()) {
+  return formatDate(now);
 }
 
 function periodForDate(date) {
@@ -148,6 +152,8 @@ async function boot() {
   document.querySelector("#historyTo").value = today;
   document.querySelector("#reportFrom").value = today.slice(0, 8) + "01";
   document.querySelector("#reportTo").value = today;
+  refreshWorkingDate();
+  scheduleWorkingDateRefresh();
   await loadRecord(today);
 }
 
@@ -457,7 +463,7 @@ function updateEntry(event) {
 
 function renderTotals(totals) {
   document.querySelector("#periodLabel").textContent = `Period: ${period.start} to ${period.end}`;
-  document.querySelector("#workingDateLabel").textContent = displayDate(record.date);
+  refreshWorkingDate();
   document.querySelectorAll("[data-duty-date-label]").forEach((element) => {
     element.textContent = displayDate(record.date);
   });
@@ -473,6 +479,21 @@ function renderTotals(totals) {
   document.querySelector("#privateArrived").textContent = whole(totals.privateBoats.arrivals);
   document.querySelector("#privateDeparted").textContent = whole(totals.privateBoats.departures);
   document.querySelector("#privateRemainingDetail").textContent = whole(totals.privateBoats.remaining);
+}
+
+function refreshWorkingDate() {
+  document.querySelector("#workingDateLabel").textContent = displayDate(workingDate());
+}
+
+function scheduleWorkingDateRefresh() {
+  const now = new Date();
+  const nextMidnight = new Date(now);
+  nextMidnight.setDate(now.getDate() + 1);
+  nextMidnight.setHours(0, 0, 0, 0);
+  setTimeout(() => {
+    refreshWorkingDate();
+    scheduleWorkingDateRefresh();
+  }, nextMidnight.getTime() - now.getTime() + 1000);
 }
 
 function renderDashboardStatus(totals) {
@@ -715,6 +736,8 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
     document.querySelector("#historyTo").value = today;
     document.querySelector("#reportFrom").value = today.slice(0, 8) + "01";
     document.querySelector("#reportTo").value = today;
+    refreshWorkingDate();
+    scheduleWorkingDateRefresh();
     await loadRecord(today);
   } catch (error) {
     document.querySelector("#loginMessage").textContent = error.message;

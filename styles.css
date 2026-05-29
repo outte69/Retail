@@ -147,6 +147,12 @@ button:hover,
   width: 100%;
 }
 
+.duty-card h1 {
+  flex-basis: 100%;
+  font-size: clamp(1.35rem, 3vw, 2rem);
+  margin: 0;
+}
+
 .duty-card div {
   align-items: baseline;
   display: flex;
