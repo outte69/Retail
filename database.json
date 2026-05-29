@@ -1,0 +1,964 @@
+{
+  "users": [
+    {
+      "id": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "role": "admin",
+      "active": true,
+      "passwordSalt": "a76e332cd35d3bcbcc11310c6a012e44",
+      "passwordHash": "9e969bb132e2610f6ead8a26e4358b19b9cdef95e02e831efa4ddf16b5c7364faa33ccb9199665fa6fdc5351076ee2f50f8d8fcaa9a1a588edd667a94e686877",
+      "createdAt": "2026-05-20T15:16:45.494Z",
+      "updatedAt": "2026-05-20T16:53:33.450Z"
+    }
+  ],
+  "records": {
+    "2026-05-20": {
+      "date": "2026-05-20",
+      "updatedAt": "2026-05-20T17:55:37.950Z",
+      "updatedBy": "admin",
+      "visitorsJetty": [
+        {
+          "id": "cc2292b3-72d7-44d3-ba38-649c0ab7a8b7",
+          "arrivalBoat": "",
+          "arrivalTime": "",
+          "arrivalPax": 7,
+          "departureBoat": "",
+          "departureTime": "",
+          "departurePax": 2
+        },
+        {
+          "id": "0bfaa38e-7847-442c-ac98-8d7d60d3ab1b",
+          "arrivalBoat": "",
+          "arrivalTime": "",
+          "arrivalPax": 0,
+          "departureBoat": "",
+          "departureTime": "",
+          "departurePax": 0
+        },
+        {
+          "id": "b77b50da-7bb3-443f-ba55-8ea12352f23e",
+          "arrivalBoat": "Test Boat",
+          "arrivalTime": "08:30",
+          "arrivalPax": 30,
+          "departureBoat": "",
+          "departureTime": "",
+          "departurePax": 0
+        }
+      ],
+      "airportVisitors": [
+        {
+          "id": "1c2f865a-2b8e-41d2-a718-4d5d6cfe941d",
+          "arrivalBoat": "",
+          "arrivalTime": "",
+          "arrivalPax": 5,
+          "departureBoat": "",
+          "departureTime": "",
+          "departurePax": 0
+        },
+        {
+          "id": "f36203f6-0e41-4fc5-ade4-743390fcde5a",
+          "arrivalBoat": "",
+          "arrivalTime": "",
+          "arrivalPax": 0,
+          "departureBoat": "",
+          "departureTime": "",
+          "departurePax": 0
+        }
+      ],
+      "privateBoats": [
+        {
+          "id": "27299195-d20a-4ace-bf91-74675bc19868",
+          "arrivalBoat": "",
+          "arrivalTime": "",
+          "arrivalPax": 3,
+          "departureBoat": "",
+          "departureTime": "",
+          "departurePax": 0
+        }
+      ],
+      "wristbands": [
+        {
+          "id": "91facf59-c5f2-40a2-9685-ae9d0b8d3899",
+          "category": "Adult day visitor",
+          "color": "#ff0000"
+        },
+        {
+          "id": "db8e741d-4777-4173-865b-81f1e0e1726c",
+          "category": "",
+          "color": "#16a34a"
+        },
+        {
+          "id": "97351d97-8cab-4d5c-91b0-ed392f33e7fa",
+          "category": "",
+          "color": "#f59e0b"
+        },
+        {
+          "id": "6f7af360-7935-4134-82a0-a57dce8fb577",
+          "category": "",
+          "color": "#ef4444"
+        },
+        {
+          "id": "b8592e3c-15b1-475a-8bb4-20b0359fb935",
+          "category": "",
+          "color": "#9333ea"
+        },
+        {
+          "id": "18a7f80a-1e28-4a6a-b252-1147ec87511e",
+          "category": "",
+          "color": "#0f766e"
+        }
+      ],
+      "cashFloat": {
+        "openingFloat": 1500,
+        "cashAdded": 0,
+        "cashTaken": 250,
+        "receivedCash": 0,
+        "actualCash": 1500,
+        "notes": ""
+      },
+      "posTransactions": [
+        {
+          "id": "e5c7b469-f456-4ce3-ba99-39577109f6f0",
+          "reference": "",
+          "description": "",
+          "cardPos": 120,
+          "bankTransfer": 23,
+          "cash": 45,
+          "refunds": 32
+        }
+      ]
+    }
+  },
+  "auditLogs": [
+    {
+      "id": "b8e1a1ec-ec70-4343-8e1d-1d01d1343e91",
+      "at": "2026-05-20T18:01:16.711Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "logout",
+      "ip": "127.0.0.1",
+      "details": {}
+    },
+    {
+      "id": "d75e52db-3ea2-47ca-9b89-69ee8d59c99e",
+      "at": "2026-05-20T17:56:35.331Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "login",
+      "ip": "127.0.0.1",
+      "details": {}
+    },
+    {
+      "id": "f5345656-a70b-40b3-a88d-5c4259a2b842",
+      "at": "2026-05-20T17:55:37.951Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "record-saved",
+      "ip": "127.0.0.1",
+      "details": {
+        "date": "2026-05-20",
+        "period": {
+          "start": "2026-05-20 07:00",
+          "end": "2026-05-21 06:00"
+        },
+        "totals": {
+          "jetty": {
+            "opening": 0,
+            "arrivals": 37,
+            "departures": 2,
+            "remaining": 35
+          },
+          "airport": {
+            "opening": 0,
+            "arrivals": 5,
+            "departures": 0,
+            "remaining": 5
+          },
+          "privateBoats": {
+            "opening": 0,
+            "arrivals": 3,
+            "departures": 0,
+            "remaining": 3
+          },
+          "allVisitorsOpening": 0,
+          "allVisitorsArrived": 45,
+          "allVisitorsDeparted": 2,
+          "allVisitorsRemaining": 43,
+          "cashIncrease": 0,
+          "expectedCash": 1500,
+          "cashVariance": 0,
+          "cashShortage": 0,
+          "cashExcess": 0,
+          "posTotal": 156
+        }
+      }
+    },
+    {
+      "id": "58f95f34-c7e8-445b-b2fd-2f6ec8d15b32",
+      "at": "2026-05-20T17:55:35.124Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "login",
+      "ip": "127.0.0.1",
+      "details": {}
+    },
+    {
+      "id": "1b6808d6-e1aa-4fb4-a81c-97294f31d8a8",
+      "at": "2026-05-20T17:45:49.945Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "login",
+      "ip": "127.0.0.1",
+      "details": {}
+    },
+    {
+      "id": "f477bedb-fce9-46c3-904f-b5f19337b228",
+      "at": "2026-05-20T17:43:31.563Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "login",
+      "ip": "127.0.0.1",
+      "details": {}
+    },
+    {
+      "id": "4c904b06-0e08-4d24-a354-e1dcce5a943f",
+      "at": "2026-05-20T17:35:08.815Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "record-saved",
+      "ip": "127.0.0.1",
+      "details": {
+        "date": "2026-05-20",
+        "period": {
+          "start": "2026-05-20 07:00",
+          "end": "2026-05-21 06:00"
+        },
+        "totals": {
+          "jetty": {
+            "opening": 0,
+            "arrivals": 37,
+            "departures": 2,
+            "remaining": 35
+          },
+          "airport": {
+            "opening": 0,
+            "arrivals": 5,
+            "departures": 0,
+            "remaining": 5
+          },
+          "privateBoats": {
+            "opening": 0,
+            "arrivals": 3,
+            "departures": 0,
+            "remaining": 3
+          },
+          "allVisitorsOpening": 0,
+          "allVisitorsArrived": 45,
+          "allVisitorsDeparted": 2,
+          "allVisitorsRemaining": 43,
+          "cashIncrease": 0,
+          "expectedCash": 1500,
+          "cashVariance": 0,
+          "cashShortage": 0,
+          "cashExcess": 0,
+          "posTotal": 156
+        }
+      }
+    },
+    {
+      "id": "81218b10-cfd4-4379-9e35-0ea65613eec5",
+      "at": "2026-05-20T17:35:08.115Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "record-saved",
+      "ip": "127.0.0.1",
+      "details": {
+        "date": "2026-05-20",
+        "period": {
+          "start": "2026-05-20 07:00",
+          "end": "2026-05-21 06:00"
+        },
+        "totals": {
+          "jetty": {
+            "opening": 0,
+            "arrivals": 37,
+            "departures": 2,
+            "remaining": 35
+          },
+          "airport": {
+            "opening": 0,
+            "arrivals": 5,
+            "departures": 0,
+            "remaining": 5
+          },
+          "privateBoats": {
+            "opening": 0,
+            "arrivals": 3,
+            "departures": 0,
+            "remaining": 3
+          },
+          "allVisitorsOpening": 0,
+          "allVisitorsArrived": 45,
+          "allVisitorsDeparted": 2,
+          "allVisitorsRemaining": 43,
+          "cashIncrease": 0,
+          "expectedCash": 1500,
+          "cashVariance": 0,
+          "cashShortage": 0,
+          "cashExcess": 0,
+          "posTotal": 156
+        }
+      }
+    },
+    {
+      "id": "4216f62b-d6a4-4d9f-b462-de688921cfa3",
+      "at": "2026-05-20T17:34:59.315Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "record-saved",
+      "ip": "127.0.0.1",
+      "details": {
+        "date": "2026-05-20",
+        "period": {
+          "start": "2026-05-20 07:00",
+          "end": "2026-05-21 06:00"
+        },
+        "totals": {
+          "jetty": {
+            "opening": 0,
+            "arrivals": 37,
+            "departures": 6,
+            "remaining": 31
+          },
+          "airport": {
+            "opening": 0,
+            "arrivals": 5,
+            "departures": 0,
+            "remaining": 5
+          },
+          "privateBoats": {
+            "opening": 0,
+            "arrivals": 3,
+            "departures": 0,
+            "remaining": 3
+          },
+          "allVisitorsOpening": 0,
+          "allVisitorsArrived": 45,
+          "allVisitorsDeparted": 6,
+          "allVisitorsRemaining": 39,
+          "cashIncrease": 0,
+          "expectedCash": 1500,
+          "cashVariance": 0,
+          "cashShortage": 0,
+          "cashExcess": 0,
+          "posTotal": 156
+        }
+      }
+    },
+    {
+      "id": "93465273-efd5-4b32-a9aa-1c47fab734d6",
+      "at": "2026-05-20T17:34:55.290Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "record-saved",
+      "ip": "127.0.0.1",
+      "details": {
+        "date": "2026-05-20",
+        "period": {
+          "start": "2026-05-20 07:00",
+          "end": "2026-05-21 06:00"
+        },
+        "totals": {
+          "jetty": {
+            "opening": 0,
+            "arrivals": 37,
+            "departures": 2,
+            "remaining": 35
+          },
+          "airport": {
+            "opening": 0,
+            "arrivals": 5,
+            "departures": 0,
+            "remaining": 5
+          },
+          "privateBoats": {
+            "opening": 0,
+            "arrivals": 3,
+            "departures": 0,
+            "remaining": 3
+          },
+          "allVisitorsOpening": 0,
+          "allVisitorsArrived": 45,
+          "allVisitorsDeparted": 2,
+          "allVisitorsRemaining": 43,
+          "cashIncrease": 0,
+          "expectedCash": 1500,
+          "cashVariance": 0,
+          "cashShortage": 0,
+          "cashExcess": 0,
+          "posTotal": 156
+        }
+      }
+    },
+    {
+      "id": "78caa776-2ae0-45d7-ae33-a6804f3186bd",
+      "at": "2026-05-20T17:34:50.272Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "record-saved",
+      "ip": "127.0.0.1",
+      "details": {
+        "date": "2026-05-20",
+        "period": {
+          "start": "2026-05-20 07:00",
+          "end": "2026-05-21 06:00"
+        },
+        "totals": {
+          "jetty": {
+            "opening": 0,
+            "arrivals": 37,
+            "departures": 2,
+            "remaining": 35
+          },
+          "airport": {
+            "opening": 0,
+            "arrivals": 5,
+            "departures": 0,
+            "remaining": 5
+          },
+          "privateBoats": {
+            "opening": 0,
+            "arrivals": 3,
+            "departures": 0,
+            "remaining": 3
+          },
+          "allVisitorsOpening": 0,
+          "allVisitorsArrived": 45,
+          "allVisitorsDeparted": 2,
+          "allVisitorsRemaining": 43,
+          "cashIncrease": 0,
+          "expectedCash": 1500,
+          "cashVariance": 0,
+          "cashShortage": 0,
+          "cashExcess": 0,
+          "posTotal": 156
+        }
+      }
+    },
+    {
+      "id": "6f9b0f12-e256-46dc-aeb3-afe21cb50641",
+      "at": "2026-05-20T17:34:41.605Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "record-saved",
+      "ip": "127.0.0.1",
+      "details": {
+        "date": "2026-05-20",
+        "period": {
+          "start": "2026-05-20 07:00",
+          "end": "2026-05-21 06:00"
+        },
+        "totals": {
+          "jetty": {
+            "opening": 0,
+            "arrivals": 7,
+            "departures": 2,
+            "remaining": 5
+          },
+          "airport": {
+            "opening": 0,
+            "arrivals": 5,
+            "departures": 0,
+            "remaining": 5
+          },
+          "privateBoats": {
+            "opening": 0,
+            "arrivals": 3,
+            "departures": 0,
+            "remaining": 3
+          },
+          "allVisitorsOpening": 0,
+          "allVisitorsArrived": 15,
+          "allVisitorsDeparted": 2,
+          "allVisitorsRemaining": 13,
+          "cashIncrease": 0,
+          "expectedCash": 1500,
+          "cashVariance": 0,
+          "cashShortage": 0,
+          "cashExcess": 0,
+          "posTotal": 156
+        }
+      }
+    },
+    {
+      "id": "5f9b37ca-7774-453a-b843-de814eeccdb0",
+      "at": "2026-05-20T17:34:22.785Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "login",
+      "ip": "127.0.0.1",
+      "details": {}
+    },
+    {
+      "id": "a504d814-d69d-441f-8716-6f36b5f68a26",
+      "at": "2026-05-20T17:33:39.093Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "record-saved",
+      "ip": "127.0.0.1",
+      "details": {
+        "date": "2026-05-20",
+        "period": {
+          "start": "2026-05-20 07:00",
+          "end": "2026-05-21 06:00"
+        },
+        "totals": {
+          "jetty": {
+            "opening": 0,
+            "arrivals": 7,
+            "departures": 2,
+            "remaining": 5
+          },
+          "airport": {
+            "opening": 0,
+            "arrivals": 5,
+            "departures": 0,
+            "remaining": 5
+          },
+          "privateBoats": {
+            "opening": 0,
+            "arrivals": 3,
+            "departures": 0,
+            "remaining": 3
+          },
+          "allVisitorsOpening": 0,
+          "allVisitorsArrived": 15,
+          "allVisitorsDeparted": 2,
+          "allVisitorsRemaining": 13,
+          "cashIncrease": 0,
+          "expectedCash": 1500,
+          "cashVariance": 0,
+          "cashShortage": 0,
+          "cashExcess": 0,
+          "posTotal": 156
+        }
+      }
+    },
+    {
+      "id": "2b40e806-4b5b-45f4-96dc-88a6502289a5",
+      "at": "2026-05-20T17:33:34.840Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "record-saved",
+      "ip": "127.0.0.1",
+      "details": {
+        "date": "2026-05-20",
+        "period": {
+          "start": "2026-05-20 07:00",
+          "end": "2026-05-21 06:00"
+        },
+        "totals": {
+          "jetty": {
+            "opening": 0,
+            "arrivals": 7,
+            "departures": 2,
+            "remaining": 5
+          },
+          "airport": {
+            "opening": 0,
+            "arrivals": 5,
+            "departures": 0,
+            "remaining": 5
+          },
+          "privateBoats": {
+            "opening": 0,
+            "arrivals": 3,
+            "departures": 0,
+            "remaining": 3
+          },
+          "allVisitorsOpening": 0,
+          "allVisitorsArrived": 15,
+          "allVisitorsDeparted": 2,
+          "allVisitorsRemaining": 13,
+          "cashIncrease": 0,
+          "expectedCash": 1500,
+          "cashVariance": 0,
+          "cashShortage": 0,
+          "cashExcess": 0,
+          "posTotal": 156
+        }
+      }
+    },
+    {
+      "id": "0deedf77-30c6-4f49-b354-27c1ccf54d76",
+      "at": "2026-05-20T17:33:31.480Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "login",
+      "ip": "127.0.0.1",
+      "details": {}
+    },
+    {
+      "id": "6dbe3089-e665-45cc-b5d3-b89d3ff0a63f",
+      "at": "2026-05-20T17:23:49.053Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "record-saved",
+      "ip": "127.0.0.1",
+      "details": {
+        "date": "2026-05-20",
+        "period": {
+          "start": "2026-05-20 07:00",
+          "end": "2026-05-21 06:00"
+        },
+        "totals": {
+          "jetty": {
+            "opening": 0,
+            "arrivals": 7,
+            "departures": 2,
+            "remaining": 5
+          },
+          "airport": {
+            "opening": 0,
+            "arrivals": 5,
+            "departures": 0,
+            "remaining": 5
+          },
+          "privateBoats": {
+            "opening": 0,
+            "arrivals": 3,
+            "departures": 0,
+            "remaining": 3
+          },
+          "allVisitorsOpening": 0,
+          "allVisitorsArrived": 15,
+          "allVisitorsDeparted": 2,
+          "allVisitorsRemaining": 13,
+          "cashIncrease": 0,
+          "expectedCash": 1500,
+          "cashVariance": 0,
+          "cashShortage": 0,
+          "cashExcess": 0,
+          "posTotal": 156
+        }
+      }
+    },
+    {
+      "id": "d569033c-15fd-46ec-932a-920105fddc54",
+      "at": "2026-05-20T17:22:02.094Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "login",
+      "ip": "127.0.0.1",
+      "details": {}
+    },
+    {
+      "id": "a2571b89-991e-4751-8ee9-d23e98c88aba",
+      "at": "2026-05-20T17:19:12.699Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "login",
+      "ip": "127.0.0.1",
+      "details": {}
+    },
+    {
+      "id": "0e4c24f4-97f4-4434-9bcd-4c38791c1df1",
+      "at": "2026-05-20T17:18:20.138Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "login",
+      "ip": "127.0.0.1",
+      "details": {}
+    },
+    {
+      "id": "893b059f-7b8c-4372-a29a-0010960da53f",
+      "at": "2026-05-20T17:12:14.157Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "record-saved",
+      "ip": "127.0.0.1",
+      "details": {
+        "date": "2026-05-20",
+        "totals": {
+          "jetty": {
+            "arrivals": 7,
+            "departures": 2,
+            "remaining": 5
+          },
+          "airport": {
+            "arrivals": 5,
+            "departures": 0,
+            "remaining": 5
+          },
+          "privateBoats": {
+            "arrivals": 3,
+            "departures": 0,
+            "remaining": 3
+          },
+          "allVisitorsArrived": 15,
+          "allVisitorsDeparted": 2,
+          "allVisitorsRemaining": 13,
+          "cashIncrease": 0,
+          "expectedCash": 1500,
+          "cashVariance": 0,
+          "cashShortage": 0,
+          "cashExcess": 0,
+          "posTotal": 120
+        }
+      }
+    },
+    {
+      "id": "4074c420-b6d1-44b7-a2aa-1f43a4d933fd",
+      "at": "2026-05-20T17:12:03.712Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "record-saved",
+      "ip": "127.0.0.1",
+      "details": {
+        "date": "2026-05-20",
+        "totals": {
+          "jetty": {
+            "arrivals": 8,
+            "departures": 2,
+            "remaining": 6
+          },
+          "airport": {
+            "arrivals": 5,
+            "departures": 0,
+            "remaining": 5
+          },
+          "privateBoats": {
+            "arrivals": 3,
+            "departures": 0,
+            "remaining": 3
+          },
+          "allVisitorsArrived": 16,
+          "allVisitorsDeparted": 2,
+          "allVisitorsRemaining": 14,
+          "cashIncrease": 0,
+          "expectedCash": 1500,
+          "cashVariance": 0,
+          "cashShortage": 0,
+          "cashExcess": 0,
+          "posTotal": 120
+        }
+      }
+    },
+    {
+      "id": "1f80810e-0a35-4039-91dd-91640a55ad40",
+      "at": "2026-05-20T17:12:02.516Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "record-saved",
+      "ip": "127.0.0.1",
+      "details": {
+        "date": "2026-05-20",
+        "totals": {
+          "jetty": {
+            "arrivals": 8,
+            "departures": 2,
+            "remaining": 6
+          },
+          "airport": {
+            "arrivals": 5,
+            "departures": 0,
+            "remaining": 5
+          },
+          "privateBoats": {
+            "arrivals": 3,
+            "departures": 0,
+            "remaining": 3
+          },
+          "allVisitorsArrived": 16,
+          "allVisitorsDeparted": 2,
+          "allVisitorsRemaining": 14,
+          "cashIncrease": 0,
+          "expectedCash": 1500,
+          "cashVariance": 0,
+          "cashShortage": 0,
+          "cashExcess": 0,
+          "posTotal": 120
+        }
+      }
+    },
+    {
+      "id": "eb334891-a78d-46e8-9182-d0c0767da9f4",
+      "at": "2026-05-20T17:11:30.366Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "record-exported",
+      "ip": "127.0.0.1",
+      "details": {
+        "date": "2026-05-20"
+      }
+    },
+    {
+      "id": "48a19fe1-6add-4f6f-99ce-5262474a239f",
+      "at": "2026-05-20T17:11:27.850Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "record-saved",
+      "ip": "127.0.0.1",
+      "details": {
+        "date": "2026-05-20",
+        "totals": {
+          "jetty": {
+            "arrivals": 8,
+            "departures": 2,
+            "remaining": 6
+          },
+          "airport": {
+            "arrivals": 5,
+            "departures": 0,
+            "remaining": 5
+          },
+          "privateBoats": {
+            "arrivals": 3,
+            "departures": 0,
+            "remaining": 3
+          },
+          "allVisitorsArrived": 16,
+          "allVisitorsDeparted": 2,
+          "allVisitorsRemaining": 14,
+          "cashIncrease": 0,
+          "expectedCash": 1500,
+          "cashVariance": 0,
+          "cashShortage": 0,
+          "cashExcess": 0,
+          "posTotal": 120
+        }
+      }
+    },
+    {
+      "id": "0edced8b-3289-4b75-8115-1c32236fba55",
+      "at": "2026-05-20T17:02:32.671Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "login",
+      "ip": "127.0.0.1",
+      "details": {}
+    },
+    {
+      "id": "1a6a0df3-18ef-4207-93c0-183d4a60c56a",
+      "at": "2026-05-20T17:01:54.791Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "login",
+      "ip": "127.0.0.1",
+      "details": {}
+    },
+    {
+      "id": "00274bd6-6ca7-4a12-b102-c438544a0a84",
+      "at": "2026-05-20T16:56:19.536Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "login",
+      "ip": "127.0.0.1",
+      "details": {}
+    },
+    {
+      "id": "d0d958cb-a9ad-4fc8-a2d0-e046b598aab6",
+      "at": "2026-05-20T16:53:33.524Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "admin-password-reset-local",
+      "ip": "local",
+      "details": {
+        "reason": "phone login troubleshooting"
+      }
+    },
+    {
+      "id": "164f1107-fd72-4744-9283-acfa45cedbec",
+      "at": "2026-05-20T15:50:52.739Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "login",
+      "ip": "127.0.0.1",
+      "details": {}
+    },
+    {
+      "id": "d0313f50-fc6d-4fc6-ad24-2d83a589d63f",
+      "at": "2026-05-20T15:49:15.085Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "login",
+      "ip": "127.0.0.1",
+      "details": {}
+    },
+    {
+      "id": "a35f2f69-ae3e-4453-9515-f980598a5ff4",
+      "at": "2026-05-20T15:24:34.031Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "login",
+      "ip": "127.0.0.1",
+      "details": {}
+    },
+    {
+      "id": "74561543-7a37-4340-9302-dc5592497b78",
+      "at": "2026-05-20T15:19:32.851Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "backup-created",
+      "ip": "127.0.0.1",
+      "details": {
+        "fileName": "database-2026-05-20T15-19-32-838Z.json",
+        "reason": "manual"
+      }
+    },
+    {
+      "id": "8c6ee8e1-2dae-495e-9aaf-877a318dc9ab",
+      "at": "2026-05-20T15:19:16.891Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "record-saved",
+      "ip": "127.0.0.1",
+      "details": {
+        "date": "2026-05-20",
+        "totals": {
+          "jetty": {
+            "arrivals": 8,
+            "departures": 2,
+            "remaining": 6
+          },
+          "airport": {
+            "arrivals": 5,
+            "departures": 0,
+            "remaining": 5
+          },
+          "allVisitorsArrived": 13,
+          "allVisitorsDeparted": 2,
+          "allVisitorsRemaining": 11,
+          "privateBoats": {
+            "arrivals": 3,
+            "departures": 0,
+            "remaining": 3
+          },
+          "expectedCash": 1500,
+          "cashVariance": 0,
+          "cashShortage": 0,
+          "cashExcess": 0,
+          "posTotal": 120
+        }
+      }
+    },
+    {
+      "id": "f6c15419-3db6-4133-9268-e673626ad058",
+      "at": "2026-05-20T15:17:29.630Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "login",
+      "ip": "127.0.0.1",
+      "details": {}
+    }
+  ],
+  "backups": [
+    {
+      "id": "66f183ae-cd05-42d3-9737-ff7df400ebc4",
+      "at": "2026-05-20T15:19:32.851Z",
+      "fileName": "database-2026-05-20T15-19-32-838Z.json",
+      "reason": "manual",
+      "createdBy": "admin"
+    }
+  ]
+}

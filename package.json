@@ -1,0 +1,13 @@
+{
+  "name": "retail-monitor",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Retail visitor movement monitor with local users, audit logs, CSV export, and operating-day records.",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "check": "node --check server.js && node --check app.js",
+    "start": "node server.js"
+  }
+}

@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Retail Monitor</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <section id="loginView" class="login-shell">
+      <form id="loginForm" class="login-card">
+        <p class="eyebrow">Retail Monitor</p>
+        <h1>Sign in</h1>
+        <label>
+          Username
+          <input id="loginUsername" autocomplete="username" required />
+        </label>
+        <label>
+          Password
+          <input id="loginPassword" type="password" autocomplete="current-password" required />
+        </label>
+        <button class="primary-button" type="submit">Sign in</button>
+        <p id="loginMessage" class="message"></p>
+      </form>
+    </section>
+
+    <section id="appView" class="app-shell hidden">
+      <header class="app-header">
+        <div>
+          <p class="eyebrow">Excel-inspired local system</p>
+          <h1>Retail Monitor</h1>
+        </div>
+        <div class="user-bar">
+          <span id="currentUser"></span>
+          <button id="logoutButton" type="button">Sign out</button>
+        </div>
+      </header>
+
+      <nav class="tabs" aria-label="Main sections">
+        <button class="tab active" data-tab="entries" type="button">Entries</button>
+        <button class="tab" data-tab="history" type="button">History</button>
+        <button class="tab admin-only" data-tab="admin" type="button">Admin</button>
+        <button class="tab admin-only" data-tab="audit" type="button">Audit & backups</button>
+      </nav>
+
+      <main>
+        <section id="entries" class="tab-panel active">
+          <div class="toolbar">
+            <label>
+              Date
+              <input id="recordDate" type="date" />
+            </label>
+            <button id="loadRecord" type="button">Load</button>
+            <button id="saveRecord" class="primary-button" type="button">Save entries</button>
+            <button id="exportRecord" type="button">Export CSV</button>
+            <label class="file-button">
+              Import CSV
+              <input id="importCsv" type="file" accept=".csv,text/csv" />
+            </label>
+            <p id="periodLabel" class="period-label">Period: 07:00 to next day 06:00</p>
+          </div>
+
+          <section class="movement-board" aria-label="Movement monitor">
+            <article>
+              <h2>Visitors Jetty</h2>
+              <div class="metric-row">
+                <span>Arrived <strong id="jettyArrived">0</strong></span>
+                <span>Departed <strong id="jettyDeparted">0</strong></span>
+                <span>Remaining <strong id="jettyRemaining">0</strong></span>
+              </div>
+            </article>
+            <article>
+              <h2>Airport Visitors</h2>
+              <div class="metric-row">
+                <span>Arrived <strong id="airportArrived">0</strong></span>
+                <span>Departed <strong id="airportDeparted">0</strong></span>
+                <span>Remaining <strong id="airportRemaining">0</strong></span>
+              </div>
+            </article>
+            <article>
+              <h2>All Visitors</h2>
+              <p class="metric-note">Includes jetty, airport, and private boats.</p>
+              <div class="metric-row">
+                <span>Arrived <strong id="allVisitorsArrivedDetail">0</strong></span>
+                <span>Departed <strong id="allVisitorsDepartedDetail">0</strong></span>
+                <span>Remaining <strong id="allVisitorsRemainingDetail">0</strong></span>
+              </div>
+            </article>
+            <article>
+              <h2>Private Boats</h2>
+              <div class="metric-row">
+                <span>Arrived <strong id="privateArrived">0</strong></span>
+                <span>Departed <strong id="privateDeparted">0</strong></span>
+                <span>Remaining <strong id="privateRemainingDetail">0</strong></span>
+              </div>
+            </article>
+          </section>
+
+          <section class="worksheet">
+            <div class="section-heading">
+              <div>
+                <h2>Visitors Jetty</h2>
+                <p>Arrivals and departures calculate jetty visitors remaining on island.</p>
+              </div>
+              <button data-add-row="visitorsJetty" type="button">Add row</button>
+            </div>
+            <div class="table-wrap">
+              <table data-table="visitorsJetty"></table>
+            </div>
+          </section>
+
+          <section class="worksheet">
+            <div class="section-heading">
+              <div>
+                <h2>Visitors Arrived from Airport</h2>
+                <p>Airport visitor movement is calculated separately, then included in total visitors.</p>
+              </div>
+              <button data-add-row="airportVisitors" type="button">Add row</button>
+            </div>
+            <div class="table-wrap">
+              <table data-table="airportVisitors"></table>
+            </div>
+          </section>
+
+          <section class="worksheet">
+            <div class="section-heading">
+              <div>
+                <h2>Private Boats</h2>
+                <p>Private boats stay separate from airport and visitor jetty calculations.</p>
+              </div>
+              <button data-add-row="privateBoats" type="button">Add row</button>
+            </div>
+            <div class="table-wrap">
+              <table data-table="privateBoats"></table>
+            </div>
+          </section>
+
+          <section class="worksheet">
+            <div class="section-heading">
+              <div>
+                <h2>Wristband Categories</h2>
+                <p>Select a wristband color and enter the category details.</p>
+              </div>
+              <button id="addWristbandRow" type="button">Add category</button>
+            </div>
+            <div class="table-wrap">
+              <table id="wristbandTable"></table>
+            </div>
+          </section>
+
+          <p id="saveMessage" class="message"></p>
+        </section>
+
+        <section id="history" class="tab-panel">
+          <div class="toolbar">
+            <label>From<input id="historyFrom" type="date" /></label>
+            <label>To<input id="historyTo" type="date" /></label>
+            <button id="loadHistory" type="button">Filter</button>
+          </div>
+          <div class="worksheet">
+            <div class="table-wrap">
+              <table id="historyTable"></table>
+            </div>
+          </div>
+        </section>
+
+        <section id="admin" class="tab-panel admin-only">
+          <div class="worksheet">
+            <div class="section-heading">
+              <div>
+                <h2>User Management</h2>
+                <p>Admins can create users, reset passwords, edit roles, and disable access.</p>
+              </div>
+            </div>
+            <form id="createUserForm" class="admin-form">
+              <input id="newUsername" placeholder="Username" required />
+              <input id="newPassword" placeholder="Password" type="password" required />
+              <select id="newRole">
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+              <button class="primary-button" type="submit">Create user</button>
+            </form>
+            <div class="table-wrap">
+              <table id="usersTable"></table>
+            </div>
+            <p id="adminMessage" class="message"></p>
+          </div>
+        </section>
+
+        <section id="audit" class="tab-panel admin-only">
+          <div class="two-column">
+            <div class="worksheet">
+              <div class="section-heading">
+                <div>
+                  <h2>Audit Logs</h2>
+                  <p>Recent sign-ins, edits, imports, exports, backups, and user changes.</p>
+                </div>
+                <button id="loadAudit" type="button">Refresh</button>
+              </div>
+              <div class="table-wrap">
+                <table id="auditTable"></table>
+              </div>
+            </div>
+            <div class="worksheet">
+              <div class="section-heading">
+                <div>
+                  <h2>Backups</h2>
+                  <p>Backups are stored on this computer inside the data folder.</p>
+                </div>
+                <button id="createBackup" class="primary-button" type="button">Create backup</button>
+              </div>
+              <div class="table-wrap">
+                <table id="backupTable"></table>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </section>
+
+    <script src="app.js"></script>
+  </body>
+</html>
