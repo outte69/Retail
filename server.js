@@ -414,9 +414,27 @@ function parseCsvLine(line) {
 }
 
 function importRecordFromCsv(date, csv) {
-  const record = emptyRecord(date);
   const lines = csv.split(/\r?\n/).filter((line) => line.trim());
+  const csvDate = lines
+    .map(parseCsvLine)
+    .find((cells) => cells[0] === "Date")?.[1];
+  const record = emptyRecord(date || csvDate || new Date().toISOString().slice(0, 10));
   let section = "";
+  const ignoredRows = new Set([
+    "Retail Monitor",
+    "Date",
+    "Operating period",
+    "Updated by",
+    "Opening balance",
+    "Total movement",
+    "Remaining balance",
+    "Summary",
+    "Visitors arrived",
+    "Visitors departed",
+    "Visitors remaining on island",
+    "Private boat remaining",
+    "Total",
+  ]);
   for (const line of lines) {
     const cells = parseCsvLine(line);
     const first = cells[0];
@@ -426,9 +444,11 @@ function importRecordFromCsv(date, csv) {
     }
     if (
       !first ||
-      first === "Total" ||
+      ignoredRows.has(first) ||
       first === "Arrival boat" ||
       first === "Arrival flight/boat" ||
+      first === "Departure boat" ||
+      first === "Departure flight/boat" ||
       first === "Opening float" ||
       first === "Reference" ||
       first === "Category details"
@@ -436,11 +456,14 @@ function importRecordFromCsv(date, csv) {
       continue;
     }
     if (section === "Visitors Jetty") {
-      record.visitorsJetty.push(toMovementRow(cells));
+      const row = toMovementRow(cells);
+      if (row) record.visitorsJetty.push(row);
     } else if (section === "Visitors Arrived from Airport") {
-      record.airportVisitors.push(toMovementRow(cells));
+      const row = toMovementRow(cells);
+      if (row) record.airportVisitors.push(row);
     } else if (section === "Private Boats") {
-      record.privateBoats.push(toMovementRow(cells));
+      const row = toMovementRow(cells);
+      if (row) record.privateBoats.push(row);
     } else if (section === "Wristband Categories") {
       record.wristbands.push({
         id: crypto.randomUUID(),
@@ -483,8 +506,7 @@ function importRecordFromCsv(date, csv) {
 }
 
 function toMovementRow(cells) {
-  return {
-    id: crypto.randomUUID(),
+  const row = {
     arrivalBoat: cells[0] || "",
     arrivalTime: cells[1] || "",
     arrivalPax: number(cells[2]),
@@ -492,6 +514,11 @@ function toMovementRow(cells) {
     departureTime: cells[4] || "",
     departurePax: number(cells[5]),
     remarks: cells[6] || "",
+  };
+  if (!Object.values(row).some((value) => value !== "" && value !== 0)) return null;
+  return {
+    id: crypto.randomUUID(),
+    ...row,
   };
 }
 

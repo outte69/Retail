@@ -50,6 +50,15 @@
 
       <main>
         <section id="dashboard" class="tab-panel active">
+          <div class="toolbar dashboard-filter">
+            <label>
+              View duty date
+              <input id="dashboardDate" type="date" />
+            </label>
+            <button id="loadDashboardDate" type="button">Show date</button>
+            <p class="period-label">Dashboard is read-only for the selected duty date.</p>
+          </div>
+
           <section class="movement-board" aria-label="Movement monitor">
             <article data-entry-target="dataEntry"><h2>Visitor Arrivals</h2><strong id="allVisitorsArrivedDetail">0</strong><p>for duty date <span data-duty-date-label></span></p></article>
             <article data-entry-target="dataEntry"><h2>Visitor Departures</h2><strong id="allVisitorsDepartedDetail">0</strong><p>for duty date <span data-duty-date-label></span></p></article>

@@ -148,6 +148,7 @@ async function boot() {
   show("app");
   configureForUser();
   document.querySelector("#recordDate").value = today;
+  document.querySelector("#dashboardDate").value = today;
   document.querySelector("#historyFrom").value = today.slice(0, 8) + "01";
   document.querySelector("#historyTo").value = today;
   document.querySelector("#reportFrom").value = today.slice(0, 8) + "01";
@@ -181,6 +182,7 @@ async function loadRecord(date) {
   period = result.period || periodForDate(record.date);
   editableRows.clear();
   document.querySelector("#recordDate").value = record.date;
+  document.querySelector("#dashboardDate").value = record.date;
   renderEntryTables();
   renderDashboardWristbands();
   renderTotals(result.totals || calculateTotals());
@@ -532,6 +534,8 @@ async function saveRecord(options = {}) {
   record = normalizeRecord(result.record);
   opening = result.opening || opening;
   period = result.period || periodForDate(record.date);
+  document.querySelector("#recordDate").value = record.date;
+  document.querySelector("#dashboardDate").value = record.date;
   if (!options.keepEditing) editableRows.clear();
   renderEntryTables();
   renderDashboardWristbands();
@@ -732,6 +736,7 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
     show("app");
     configureForUser();
     document.querySelector("#recordDate").value = today;
+    document.querySelector("#dashboardDate").value = today;
     document.querySelector("#historyFrom").value = today.slice(0, 8) + "01";
     document.querySelector("#historyTo").value = today;
     document.querySelector("#reportFrom").value = today.slice(0, 8) + "01";
@@ -766,6 +771,8 @@ document.querySelectorAll(".tab").forEach((tab) => {
 
 document.querySelector("#loadRecord").addEventListener("click", () => loadRecord(document.querySelector("#recordDate").value));
 document.querySelector("#recordDate").addEventListener("change", (event) => loadRecord(event.target.value));
+document.querySelector("#loadDashboardDate").addEventListener("click", () => loadRecord(document.querySelector("#dashboardDate").value));
+document.querySelector("#dashboardDate").addEventListener("change", (event) => loadRecord(event.target.value));
 document.querySelector("#saveRecord").addEventListener("click", saveRecord);
 document.querySelector("#exportRecord").addEventListener("click", () => {
   window.location.href = `/api/export?date=${encodeURIComponent(document.querySelector("#recordDate").value)}`;
