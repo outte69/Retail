@@ -270,15 +270,53 @@ function recordTotals(record, opening = { jetty: 0, airport: 0, privateBoats: 0 
   };
 }
 
-function preserveRowsForNonAdmin(existingRecord, incomingRecord) {
-  if (!existingRecord) return incomingRecord;
-  ["visitorsJetty", "airportVisitors", "privateBoats"].forEach((section) => {
-    const incomingRows = Array.isArray(incomingRecord[section]) ? incomingRecord[section] : [];
-    const incomingIds = new Set(incomingRows.map((row) => row.id).filter(Boolean));
-    const removedRows = (existingRecord[section] || []).filter((row) => row.id && !incomingIds.has(row.id));
-    incomingRecord[section] = [...incomingRows, ...removedRows];
+function hasRowData(row) {
+  return Object.entries(row || {}).some(([key, value]) => key !== "id" && value !== "" && value !== null && value !== undefined && value !== 0);
+}
+
+function pruneEmptyRows(record) {
+  ["visitorsJetty", "airportVisitors", "privateBoats", "wristbands", "posTransactions"].forEach((section) => {
+    if (Array.isArray(record[section])) {
+      record[section] = record[section].filter(hasRowData);
+    }
   });
-  return incomingRecord;
+  return record;
+}
+
+function mergeRows(existingRows = [], incomingRows = [], allowDelete = false) {
+  const merged = [];
+  const incomingById = new Map((incomingRows || []).filter((row) => row.id).map((row) => [row.id, row]));
+
+  (existingRows || []).forEach((existingRow) => {
+    if (existingRow.id && incomingById.has(existingRow.id)) {
+      merged.push({ ...existingRow, ...incomingById.get(existingRow.id) });
+      incomingById.delete(existingRow.id);
+    } else if (!allowDelete) {
+      merged.push(existingRow);
+    }
+  });
+
+  (incomingRows || []).forEach((row) => {
+    if ((!row.id || incomingById.has(row.id)) && hasRowData(row)) {
+      merged.push(row);
+    }
+  });
+
+  return merged;
+}
+
+function mergeRecordForSave(existingRecord, incomingRecord, user) {
+  if (!existingRecord) return incomingRecord;
+  const allowDelete = user.role === "admin";
+  const merged = { ...existingRecord, ...incomingRecord };
+
+  ["visitorsJetty", "airportVisitors", "privateBoats", "wristbands"].forEach((section) => {
+    merged[section] = mergeRows(existingRecord[section] || [], incomingRecord[section] || [], allowDelete);
+  });
+
+  merged.cashFloat = { ...(existingRecord.cashFloat || {}), ...(incomingRecord.cashFloat || {}) };
+  merged.posTransactions = mergeRows(existingRecord.posTransactions || [], incomingRecord.posTransactions || [], allowDelete);
+  return merged;
 }
 
 function csvCell(value) {
@@ -295,7 +333,7 @@ function recordToCsv(record, opening) {
     ["Updated by", record.updatedBy || ""],
     [],
     ["Visitors Jetty"],
-    ["Arrival boat", "Arrived time", "Arrival pax", "Departure boat", "Departure time", "Departure pax"],
+    ["Arrival boat", "Arrived time", "Arrival pax", "Departure boat", "Departure time", "Departure pax", "Remarks"],
     ...(record.visitorsJetty || []).map((row) => [
       row.arrivalBoat,
       row.arrivalTime,
@@ -303,13 +341,14 @@ function recordToCsv(record, opening) {
       row.departureBoat,
       row.departureTime,
       row.departurePax,
+      row.remarks,
     ]),
     ["Opening balance", "", totals.jetty.opening, "", "", ""],
     ["Total movement", "", totals.jetty.arrivals, "", "", totals.jetty.departures],
     ["Remaining balance", "", totals.jetty.remaining, "", "", ""],
     [],
     ["Visitors Arrived from Airport"],
-    ["Arrival flight/boat", "Arrived time", "Arrival pax", "Departure flight/boat", "Departure time", "Departure pax"],
+    ["Arrival flight/boat", "Arrived time", "Arrival pax", "Departure flight/boat", "Departure time", "Departure pax", "Remarks"],
     ...(record.airportVisitors || []).map((row) => [
       row.arrivalBoat,
       row.arrivalTime,
@@ -317,13 +356,14 @@ function recordToCsv(record, opening) {
       row.departureBoat,
       row.departureTime,
       row.departurePax,
+      row.remarks,
     ]),
     ["Opening balance", "", totals.airport.opening, "", "", ""],
     ["Total movement", "", totals.airport.arrivals, "", "", totals.airport.departures],
     ["Remaining balance", "", totals.airport.remaining, "", "", ""],
     [],
     ["Private Boats"],
-    ["Arrival boat", "Arrived time", "Arrival pax", "Departure boat", "Departure time", "Departure pax"],
+    ["Arrival boat", "Arrived time", "Arrival pax", "Departure boat", "Departure time", "Departure pax", "Remarks"],
     ...(record.privateBoats || []).map((row) => [
       row.arrivalBoat,
       row.arrivalTime,
@@ -331,6 +371,7 @@ function recordToCsv(record, opening) {
       row.departureBoat,
       row.departureTime,
       row.departurePax,
+      row.remarks,
     ]),
     ["Opening balance", "", totals.privateBoats.opening, "", "", ""],
     ["Total movement", "", totals.privateBoats.arrivals, "", "", totals.privateBoats.departures],
@@ -450,6 +491,7 @@ function toMovementRow(cells) {
     departureBoat: cells[3] || "",
     departureTime: cells[4] || "",
     departurePax: number(cells[5]),
+    remarks: cells[6] || "",
   };
 }
 
@@ -539,10 +581,9 @@ async function handleApi(req, res) {
     const user = requireUser(req, res);
     if (!user) return;
     const body = await readBody(req);
-    let record = { ...emptyRecord(body.record?.date), ...body.record };
-    if (user.role !== "admin") {
-      record = preserveRowsForNonAdmin(db.records[record.date], record);
-    }
+    const incomingRecord = pruneEmptyRows({ ...emptyRecord(body.record?.date), ...body.record });
+    const existingRecord = db.records[incomingRecord.date];
+    const record = mergeRecordForSave(existingRecord, incomingRecord, user);
     record.updatedAt = new Date().toISOString();
     record.updatedBy = user.username;
     db.records[record.date] = record;
@@ -673,8 +714,10 @@ async function handleApi(req, res) {
     if (!user) return;
     const from = url.searchParams.get("from");
     const to = url.searchParams.get("to");
+    const fromValue = from ? new Date(from).toISOString() : null;
+    const toValue = to ? new Date(to).toISOString() : null;
     const logs = db.auditLogs
-      .filter((log) => (!from || log.at.slice(0, 10) >= from) && (!to || log.at.slice(0, 10) <= to))
+      .filter((log) => (!fromValue || log.at >= fromValue) && (!toValue || log.at <= toValue))
       .slice(0, 500);
     send(res, 200, { logs });
     return;

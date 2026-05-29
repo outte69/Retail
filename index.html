@@ -26,9 +26,11 @@
 
     <section id="appView" class="app-shell hidden">
       <header class="app-header">
-        <div>
-          <p class="eyebrow">Excel-inspired local system</p>
-          <h1>Retail Monitor</h1>
+        <div class="duty-card">
+          <div>
+            <span>Working Date</span>
+            <strong id="workingDateLabel">--.--.----</strong>
+          </div>
         </div>
         <div class="user-bar">
           <span id="currentUser"></span>
@@ -37,17 +39,46 @@
       </header>
 
       <nav class="tabs" aria-label="Main sections">
-        <button class="tab active" data-tab="entries" type="button">Entries</button>
-        <button class="tab" data-tab="history" type="button">History</button>
+        <button class="tab active" data-tab="dashboard" type="button">Dashboard</button>
+        <button class="tab" data-tab="dataEntry" type="button">Enter Data</button>
+        <button class="tab" data-tab="records" type="button">Edit Records</button>
+        <button class="tab" data-tab="reports" type="button">Reports</button>
         <button class="tab admin-only" data-tab="admin" type="button">Admin</button>
         <button class="tab admin-only" data-tab="audit" type="button">Audit & backups</button>
       </nav>
 
       <main>
-        <section id="entries" class="tab-panel active">
+        <section id="dashboard" class="tab-panel active">
+          <section class="movement-board" aria-label="Movement monitor">
+            <article data-entry-target="dataEntry"><h2>Visitor Arrivals</h2><strong id="allVisitorsArrivedDetail">0</strong><p>for duty date <span data-duty-date-label></span></p></article>
+            <article data-entry-target="dataEntry"><h2>Visitor Departures</h2><strong id="allVisitorsDepartedDetail">0</strong><p>for duty date <span data-duty-date-label></span></p></article>
+            <article data-entry-target="dataEntry"><h2>Remaining Visitors</h2><strong id="allVisitorsRemainingDetail">0</strong><p>for duty date <span data-duty-date-label></span></p></article>
+            <article data-entry-target="dataEntry"><h2>Jetty Arrivals</h2><strong id="jettyArrived">0</strong><p>for duty date <span data-duty-date-label></span></p></article>
+            <article data-entry-target="dataEntry"><h2>Jetty Departures</h2><strong id="jettyDeparted">0</strong><p>for duty date <span data-duty-date-label></span></p></article>
+            <article data-entry-target="dataEntry"><h2>Jetty Remaining</h2><strong id="jettyRemaining">0</strong><p>for duty date <span data-duty-date-label></span></p></article>
+            <article data-entry-target="dataEntry"><h2>Airport Arrivals</h2><strong id="airportArrived">0</strong><p>for duty date <span data-duty-date-label></span></p></article>
+            <article data-entry-target="dataEntry"><h2>Airport Departures</h2><strong id="airportDeparted">0</strong><p>for duty date <span data-duty-date-label></span></p></article>
+            <article data-entry-target="dataEntry"><h2>Airport Remaining</h2><strong id="airportRemaining">0</strong><p>for duty date <span data-duty-date-label></span></p></article>
+            <article data-entry-target="dataEntry"><h2>Private Boat Arrivals</h2><strong id="privateArrived">0</strong><p>for duty date <span data-duty-date-label></span></p></article>
+            <article data-entry-target="dataEntry"><h2>Private Boat Departures</h2><strong id="privateDeparted">0</strong><p>for duty date <span data-duty-date-label></span></p></article>
+            <article data-entry-target="dataEntry"><h2>Private Boat Remaining</h2><strong id="privateRemainingDetail">0</strong><p>for duty date <span data-duty-date-label></span></p></article>
+          </section>
+
+          <section class="worksheet dashboard-wristbands">
+            <div class="section-heading">
+              <div>
+                <h2>Wristband Color Codes</h2>
+                <p>Read-only color code monitor for the selected duty date.</p>
+              </div>
+            </div>
+            <div id="dashboardWristbands" class="wristband-preview-grid"></div>
+          </section>
+        </section>
+
+        <section id="dataEntry" class="tab-panel">
           <div class="toolbar">
             <label>
-              Date
+              Duty date
               <input id="recordDate" type="date" />
             </label>
             <button id="loadRecord" type="button">Load</button>
@@ -59,43 +90,6 @@
             </label>
             <p id="periodLabel" class="period-label">Period: 07:00 to next day 06:00</p>
           </div>
-
-          <section class="movement-board" aria-label="Movement monitor">
-            <article>
-              <h2>Visitors Jetty</h2>
-              <div class="metric-row">
-                <span>Arrived <strong id="jettyArrived">0</strong></span>
-                <span>Departed <strong id="jettyDeparted">0</strong></span>
-                <span>Remaining <strong id="jettyRemaining">0</strong></span>
-              </div>
-            </article>
-            <article>
-              <h2>Airport Visitors</h2>
-              <div class="metric-row">
-                <span>Arrived <strong id="airportArrived">0</strong></span>
-                <span>Departed <strong id="airportDeparted">0</strong></span>
-                <span>Remaining <strong id="airportRemaining">0</strong></span>
-              </div>
-            </article>
-            <article>
-              <h2>All Visitors</h2>
-              <p class="metric-note">Includes jetty, airport, and private boats.</p>
-              <div class="metric-row">
-                <span>Arrived <strong id="allVisitorsArrivedDetail">0</strong></span>
-                <span>Departed <strong id="allVisitorsDepartedDetail">0</strong></span>
-                <span>Remaining <strong id="allVisitorsRemainingDetail">0</strong></span>
-              </div>
-            </article>
-            <article>
-              <h2>Private Boats</h2>
-              <div class="metric-row">
-                <span>Arrived <strong id="privateArrived">0</strong></span>
-                <span>Departed <strong id="privateDeparted">0</strong></span>
-                <span>Remaining <strong id="privateRemainingDetail">0</strong></span>
-              </div>
-            </article>
-          </section>
-
           <section class="worksheet">
             <div class="section-heading">
               <div>
@@ -151,15 +145,49 @@
           <p id="saveMessage" class="message"></p>
         </section>
 
-        <section id="history" class="tab-panel">
+        <section id="records" class="tab-panel">
           <div class="toolbar">
             <label>From<input id="historyFrom" type="date" /></label>
             <label>To<input id="historyTo" type="date" /></label>
+            <label>Month<input id="historyMonth" type="month" /></label>
             <button id="loadHistory" type="button">Filter</button>
           </div>
           <div class="worksheet">
+            <div class="section-heading">
+              <div>
+                <h2>Saved Records</h2>
+                <p>Select a row to open that duty date for editing.</p>
+              </div>
+            </div>
             <div class="table-wrap">
               <table id="historyTable"></table>
+            </div>
+          </div>
+        </section>
+
+        <section id="reports" class="tab-panel">
+          <div class="toolbar">
+            <label>From date<input id="reportFrom" type="date" /></label>
+            <label>To date<input id="reportTo" type="date" /></label>
+            <label>Month<input id="reportMonth" type="month" /></label>
+            <button id="loadReport" type="button">Run report</button>
+            <button id="exportReportRecord" type="button">Export selected CSV</button>
+          </div>
+          <section class="report-cards">
+            <article><span>Total arrivals</span><strong id="reportArrivals">0</strong></article>
+            <article><span>Total departures</span><strong id="reportDepartures">0</strong></article>
+            <article><span>Total remaining</span><strong id="reportRemaining">0</strong></article>
+            <article><span>Private boat remaining</span><strong id="reportPrivateRemaining">0</strong></article>
+          </section>
+          <div class="worksheet">
+            <div class="section-heading">
+              <div>
+                <h2>Filtered Records</h2>
+                <p>Review totals by date range or month.</p>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table id="reportTable"></table>
             </div>
           </div>
         </section>
@@ -196,7 +224,12 @@
                   <h2>Audit Logs</h2>
                   <p>Recent sign-ins, edits, imports, exports, backups, and user changes.</p>
                 </div>
-                <button id="loadAudit" type="button">Refresh</button>
+              </div>
+              <div class="toolbar inset-toolbar">
+                <label>From<input id="auditFrom" type="datetime-local" /></label>
+                <label>To<input id="auditTo" type="datetime-local" /></label>
+                <label>Month<input id="auditMonth" type="month" /></label>
+                <button id="loadAudit" type="button">Filter logs</button>
               </div>
               <div class="table-wrap">
                 <table id="auditTable"></table>

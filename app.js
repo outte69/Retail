@@ -15,6 +15,7 @@ const movementColumns = [
   ["departureBoat", "Departure boat", "text"],
   ["departureTime", "Departure time", "time"],
   ["departurePax", "No. of pax", "number"],
+  ["remarks", "Remarks", "text"],
 ];
 
 const posColumns = [
@@ -66,6 +67,7 @@ function emptyMovementRow() {
     departureBoat: "",
     departureTime: "",
     departurePax: 0,
+    remarks: "",
   };
 }
 
@@ -144,6 +146,8 @@ async function boot() {
   document.querySelector("#recordDate").value = today;
   document.querySelector("#historyFrom").value = today.slice(0, 8) + "01";
   document.querySelector("#historyTo").value = today;
+  document.querySelector("#reportFrom").value = today.slice(0, 8) + "01";
+  document.querySelector("#reportTo").value = today;
   await loadRecord(today);
 }
 
@@ -153,7 +157,7 @@ function configureForUser() {
     element.classList.toggle("hidden", currentUser.role !== "admin");
   });
   if (currentUser.role !== "admin" && ["admin", "audit"].includes(document.querySelector(".tab.active")?.dataset.tab)) {
-    activateTab("entries");
+    activateTab("dashboard");
   }
 }
 
@@ -172,10 +176,24 @@ async function loadRecord(date) {
   editableRows.clear();
   document.querySelector("#recordDate").value = record.date;
   renderEntryTables();
+  renderDashboardWristbands();
   renderTotals(result.totals || calculateTotals());
+  renderDashboardStatus(result.totals || calculateTotals());
   document.querySelector("#saveMessage").textContent = record.updatedAt
     ? `Loaded ${record.date}. Period ${period.start} to ${period.end}. Last saved by ${record.updatedBy || "unknown"}.`
     : `Loaded blank sheet for ${record.date}. Period ${period.start} to ${period.end}.`;
+}
+
+function displayDate(date) {
+  const [year, month, day] = date.split("-");
+  return `${day}.${month}.${year}`;
+}
+
+function monthRange(month) {
+  const [year, value] = month.split("-").map(Number);
+  const first = `${month}-01`;
+  const lastDay = new Date(Date.UTC(year, value, 0)).getUTCDate();
+  return { from: first, to: `${month}-${String(lastDay).padStart(2, "0")}` };
 }
 
 function normalizeRecord(source) {
@@ -252,6 +270,25 @@ function renderEntryTables() {
   renderMovementTable("airportVisitors");
   renderMovementTable("privateBoats");
   renderWristbandTable();
+  renderDashboardWristbands();
+}
+
+function renderDashboardWristbands() {
+  const target = document.querySelector("#dashboardWristbands");
+  if (!target) return;
+  const rows = (record.wristbands || []).filter((row) => row.category || row.color);
+  target.innerHTML =
+    rows
+      .map(
+        (row, index) => `<article>
+          <span class="color-swatch" style="background:${row.color || "#0f766e"}"></span>
+          <div>
+            <strong>${row.category || `Category ${index + 1}`}</strong>
+            <p>${row.color || "#0f766e"}</p>
+          </div>
+        </article>`
+      )
+      .join("") || '<p class="empty-state">No wristband categories saved for this duty date.</p>';
 }
 
 function renderMovementTable(key) {
@@ -283,7 +320,7 @@ function inputCell(section, index, field, type) {
   input.dataset.index = index;
   input.dataset.field = field;
   input.disabled = shouldLockInput(section, index, field);
-  if (field.includes("Boat") || field === "description") input.classList.add("wide-input");
+  if (field.includes("Boat") || field === "description" || field === "remarks") input.classList.add("wide-input");
   input.addEventListener("input", updateEntry);
   cell.append(input);
   return cell;
@@ -405,6 +442,7 @@ function updateWristband(event) {
     row.children[3].textContent = event.target.value;
     row.querySelector(".color-swatch").style.background = event.target.value;
   }
+  renderDashboardWristbands();
   scheduleAutoSave();
 }
 
@@ -419,6 +457,10 @@ function updateEntry(event) {
 
 function renderTotals(totals) {
   document.querySelector("#periodLabel").textContent = `Period: ${period.start} to ${period.end}`;
+  document.querySelector("#workingDateLabel").textContent = displayDate(record.date);
+  document.querySelectorAll("[data-duty-date-label]").forEach((element) => {
+    element.textContent = displayDate(record.date);
+  });
   document.querySelector("#jettyArrived").textContent = whole(totals.jetty.arrivals);
   document.querySelector("#jettyDeparted").textContent = whole(totals.jetty.departures);
   document.querySelector("#jettyRemaining").textContent = whole(totals.jetty.remaining);
@@ -431,6 +473,23 @@ function renderTotals(totals) {
   document.querySelector("#privateArrived").textContent = whole(totals.privateBoats.arrivals);
   document.querySelector("#privateDeparted").textContent = whole(totals.privateBoats.departures);
   document.querySelector("#privateRemainingDetail").textContent = whole(totals.privateBoats.remaining);
+}
+
+function renderDashboardStatus(totals) {
+  if (document.querySelector("#currentStatusText")) {
+    document.querySelector("#currentStatusText").textContent =
+    record.date === today
+      ? `Current duty date ${displayDate(today)} has ${whole(totals.allVisitorsRemaining)} visitors remaining.`
+      : `Current duty date is ${displayDate(today)}.`;
+  }
+  if (document.querySelector("#selectedStatusText")) {
+    document.querySelector("#selectedStatusText").textContent =
+      `Selected duty date ${displayDate(record.date)} runs ${period.start} to ${period.end}.`;
+  }
+  if (document.querySelector("#reportStatusText")) {
+    document.querySelector("#reportStatusText").textContent =
+      `${whole(totals.allVisitorsArrived)} arrivals, ${whole(totals.allVisitorsDeparted)} departures, ${whole(totals.allVisitorsRemaining)} remaining.`;
+  }
 }
 
 function setMoney(selector, value, status = "auto") {
@@ -454,13 +513,17 @@ async function saveRecord(options = {}) {
   period = result.period || periodForDate(record.date);
   if (!options.keepEditing) editableRows.clear();
   renderEntryTables();
+  renderDashboardWristbands();
   renderTotals(result.totals);
+  renderDashboardStatus(result.totals);
   document.querySelector("#saveMessage").textContent = options.silent ? `Saved automatically at ${new Date().toLocaleTimeString()}.` : `Saved ${record.date}.`;
 }
 
 async function loadHistory() {
-  const from = document.querySelector("#historyFrom").value;
-  const to = document.querySelector("#historyTo").value;
+  const month = document.querySelector("#historyMonth").value;
+  const range = month ? monthRange(month) : null;
+  const from = range?.from || document.querySelector("#historyFrom").value;
+  const to = range?.to || document.querySelector("#historyTo").value;
   const result = await api(`/api/records/list?from=${from}&to=${to}`);
   const rows = result.records
     .map(
@@ -481,6 +544,56 @@ async function loadHistory() {
   document.querySelector("#historyTable").innerHTML = `
     <thead><tr><th>Date</th><th>Period</th><th>Updated by</th><th>Saved at</th><th>Visitors arrived</th><th>Visitors departed</th><th>Visitors remaining</th><th>Private arrived</th><th>Private departed</th><th>Private remaining</th></tr></thead>
     <tbody>${rows || '<tr><td colspan="10">No records found.</td></tr>'}</tbody>
+  `;
+}
+
+function reportTotals(records) {
+  const movement = records.reduce(
+    (totals, item) => {
+      totals.arrivals += number(item.totals.allVisitorsArrived);
+      totals.departures += number(item.totals.allVisitorsDeparted);
+      return totals;
+    },
+    { arrivals: 0, departures: 0, remaining: 0, privateRemaining: 0 }
+  );
+  const closingRecord = records[0];
+  movement.remaining = closingRecord ? number(closingRecord.totals.allVisitorsRemaining) : 0;
+  movement.privateRemaining = closingRecord ? number(closingRecord.totals.privateBoats.remaining) : 0;
+  return movement;
+}
+
+async function loadReport() {
+  const month = document.querySelector("#reportMonth").value;
+  const range = month ? monthRange(month) : null;
+  const from = range?.from || document.querySelector("#reportFrom").value;
+  const to = range?.to || document.querySelector("#reportTo").value;
+  const result = await api(`/api/records/list?from=${from}&to=${to}`);
+  const totals = reportTotals(result.records);
+  document.querySelector("#reportArrivals").textContent = whole(totals.arrivals);
+  document.querySelector("#reportDepartures").textContent = whole(totals.departures);
+  document.querySelector("#reportRemaining").textContent = whole(totals.remaining);
+  document.querySelector("#reportPrivateRemaining").textContent = whole(totals.privateRemaining);
+  document.querySelector("#reportTable").innerHTML = `
+    <thead><tr><th>Date</th><th>Period</th><th>Updated by</th><th>Visitors arrived</th><th>Visitors departed</th><th>Visitors remaining</th><th>Private arrived</th><th>Private departed</th><th>Private remaining</th></tr></thead>
+    <tbody>
+      ${
+        result.records
+          .map(
+            (item) => `<tr data-history-date="${item.date}">
+              <td>${item.date}</td>
+              <td>${item.period?.start || ""} to ${item.period?.end || ""}</td>
+              <td>${item.updatedBy || ""}</td>
+              <td>${whole(item.totals.allVisitorsArrived)}</td>
+              <td>${whole(item.totals.allVisitorsDeparted)}</td>
+              <td>${whole(item.totals.allVisitorsRemaining)}</td>
+              <td>${whole(item.totals.privateBoats.arrivals)}</td>
+              <td>${whole(item.totals.privateBoats.departures)}</td>
+              <td>${whole(item.totals.privateBoats.remaining)}</td>
+            </tr>`
+          )
+          .join("") || '<tr><td colspan="9">No records found.</td></tr>'
+      }
+    </tbody>
   `;
 }
 
@@ -526,7 +639,17 @@ async function updateUser(userId) {
 
 async function loadAudit() {
   if (currentUser.role !== "admin") return;
-  const result = await api("/api/audit");
+  const month = document.querySelector("#auditMonth").value;
+  const range = month ? monthRange(month) : null;
+  const params = new URLSearchParams();
+  if (range) {
+    params.set("from", `${range.from}T00:00`);
+    params.set("to", `${range.to}T23:59`);
+  } else {
+    if (document.querySelector("#auditFrom").value) params.set("from", document.querySelector("#auditFrom").value);
+    if (document.querySelector("#auditTo").value) params.set("to", document.querySelector("#auditTo").value);
+  }
+  const result = await api(`/api/audit?${params.toString()}`);
   document.querySelector("#auditTable").innerHTML = `
     <thead><tr><th>Time</th><th>User</th><th>Action</th><th>Details</th></tr></thead>
     <tbody>
@@ -588,6 +711,10 @@ document.querySelector("#loginForm").addEventListener("submit", async (event) =>
     show("app");
     configureForUser();
     document.querySelector("#recordDate").value = today;
+    document.querySelector("#historyFrom").value = today.slice(0, 8) + "01";
+    document.querySelector("#historyTo").value = today;
+    document.querySelector("#reportFrom").value = today.slice(0, 8) + "01";
+    document.querySelector("#reportTo").value = today;
     await loadRecord(today);
   } catch (error) {
     document.querySelector("#loginMessage").textContent = error.message;
@@ -604,7 +731,8 @@ document.querySelectorAll(".tab").forEach((tab) => {
   tab.addEventListener("click", async () => {
     if (currentUser?.role !== "admin" && tab.classList.contains("admin-only")) return;
     activateTab(tab.dataset.tab);
-    if (tab.dataset.tab === "history") await loadHistory();
+    if (tab.dataset.tab === "records") await loadHistory();
+    if (tab.dataset.tab === "reports") await loadReport();
     if (tab.dataset.tab === "admin") await loadUsers();
     if (tab.dataset.tab === "audit") {
       await loadAudit();
@@ -626,8 +754,21 @@ document.querySelector("#loadHistory").addEventListener("click", loadHistory);
 document.querySelector("#historyTable").addEventListener("click", async (event) => {
   const row = event.target.closest("[data-history-date]");
   if (!row) return;
-  activateTab("entries");
+  activateTab("dataEntry");
   await loadRecord(row.dataset.historyDate);
+});
+document.querySelector("#loadReport").addEventListener("click", loadReport);
+document.querySelector("#exportReportRecord").addEventListener("click", () => {
+  window.location.href = `/api/export?date=${encodeURIComponent(document.querySelector("#recordDate").value)}`;
+});
+document.querySelector("#reportTable").addEventListener("click", async (event) => {
+  const row = event.target.closest("[data-history-date]");
+  if (!row) return;
+  await loadRecord(row.dataset.historyDate);
+  activateTab("dashboard");
+});
+document.querySelectorAll("[data-entry-target]").forEach((card) => {
+  card.addEventListener("click", () => activateTab(card.dataset.entryTarget));
 });
 document.querySelectorAll("[data-add-row]").forEach((button) => {
   button.addEventListener("click", () => {

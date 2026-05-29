@@ -131,6 +131,35 @@
   },
   "auditLogs": [
     {
+      "id": "65ad85a1-4d99-466c-9a95-9531f432516f",
+      "at": "2026-05-29T15:35:38.847Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "record-exported",
+      "ip": "127.0.0.1",
+      "details": {
+        "date": "2026-05-29"
+      }
+    },
+    {
+      "id": "c52727ed-dd5e-4ceb-8db7-e45e0471334f",
+      "at": "2026-05-29T15:22:32.155Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "login",
+      "ip": "127.0.0.1",
+      "details": {}
+    },
+    {
+      "id": "d7b8fb51-2ac7-4fc9-9a0a-55036e79b9db",
+      "at": "2026-05-29T14:02:02.619Z",
+      "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
+      "username": "admin",
+      "action": "login",
+      "ip": "127.0.0.1",
+      "details": {}
+    },
+    {
       "id": "b8e1a1ec-ec70-4343-8e1d-1d01d1343e91",
       "at": "2026-05-20T18:01:16.711Z",
       "userId": "65cac3af-30fe-4e64-be67-78112db5855f",
